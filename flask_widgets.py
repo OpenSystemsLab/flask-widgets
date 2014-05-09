@@ -1,4 +1,4 @@
-__version__ = '0.1'
+__version__ = '0.2'
 __versionfull__ = __version__
 
 
@@ -40,10 +40,10 @@ class Widgets():
         return output
 
     @classmethod
-    def render_widget(self, name, *options):
+    def render_widget(self, name, **options):
         if name in self._widgets:
             f = self._widgets[name]
-            res = f(*options)
+            res = f(**options)
             if not isinstance(res, basestring):
                 template = 'widgets/%s.html' % f.__name__
                 return Markup(render_template(template, **res))

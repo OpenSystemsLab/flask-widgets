@@ -12,6 +12,10 @@ widgets = Widgets(app)
 def title():
     return 'Flask-Widget example'
 
+@widgets.widget('say')
+def say(msg):
+    return 'says %s!' % msg
+
 
 @widgets.position('header', order=100)
 def hello_world():

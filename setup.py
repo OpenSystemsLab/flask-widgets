@@ -8,17 +8,14 @@ from setuptools import setup
 
 setup(
     name='Flask-Widgets',
-    version='0.1',
+    version='0.2',
     url='https://github.com/rgv151/flask-widgets',
     license='MIT',
     author='Bruce Doan',
     author_email='me@huy.im',
-    description='Basic widgets support for Flask',
+    description='This extension provides basic template widget feature for Flask',
     long_description=__doc__,
     py_modules=['flask_widgets'],
-    # if you would be using a package instead use packages instead
-    # of py_modules:
-    # packages=['flask_sqlite3'],
     zip_safe=False,
     include_package_data=True,
     platforms='any',
