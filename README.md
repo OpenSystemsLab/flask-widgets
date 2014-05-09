@@ -1,14 +1,15 @@
-flask-widgets
+Flask-Widgets
 =============
+This extension provides basic template widget feature for [Flask](http://flask.pocoo.org)
 
-Flask-Widgets is a basic extension to provides template widget support for Flask
+Installing Flask-Widgets
+------------------------
 
-I don't have time and enough English skill for writing documentation at the moment.
+Install with **pip**:
 
-Check out example folder to see how it works.
-
-
-Any advices and suggestions are welcome!
+````pip install flask-widgets````
 
 
-WARNING: This extension is under development, use it as your own risk!
+Document
+--------
+Read The Docs: http://flask-widgets.readthedocs.org/en/latest
