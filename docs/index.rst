@@ -6,9 +6,9 @@
 Flask-Widgets
 =============
 
-This exention provides basic template widget feature for `Flask <http://flask.pocoo.org>`_
+This extension provides basic template widget feature for `Flask <http://flask.pocoo.org>`_
 
-.. module:: flask.ext.cache
+.. module:: flask.ext.widgets
 
 Installing Flask-Widgets
 ------------------------
@@ -53,7 +53,7 @@ The example above will register a standalone widget named ``title`` and position
 
 To reorder the widgets in a position, adjust the ``order`` variable, widget with less order will render first
 
-Widget method must return a dict of variables or a string, in case it returns a dict,
+Widget method must return a `dict` of variables or a string, in case it returns a `dict`,
 ``Widgets`` with render them with a template has same name as the method ``widgets/sidebar_featured_items.html``
 You can register as many positions and the number of widgets for them as you want.
 
