@@ -1,4 +1,4 @@
-__version__ = '0.2'
+__version__ = '0.3'
 __versionfull__ = __version__
 
 
@@ -32,6 +32,8 @@ class Widgets():
         for widget in widgets:
             f = widget[0]
             res = f()
+            if res is None:
+                return ''
             if not isinstance(res, basestring):
                 template = 'widgets/%s.html' % f.__name__
                 output += Markup(render_template(template, **res))
@@ -44,6 +46,8 @@ class Widgets():
         if name in self._widgets:
             f = self._widgets[name]
             res = f(**options)
+            if res is None:
+                return ''
             if not isinstance(res, basestring):
                 template = 'widgets/%s.html' % f.__name__
                 return Markup(render_template(template, **res))
