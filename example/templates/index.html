@@ -9,10 +9,10 @@
 </div>
 Template body
 <h4>
-{{ widget('say', msg='hi') }}
+{{ widget('say', msg='hi', timeout=50) }}
 </h4>
 <div style="border:1px solid #ddd">
-    {{ widgets('footer') }}
+    {{ widgets('footer', timeout=50) }}
 </div>
 </body>
 </html>

@@ -1,31 +1,55 @@
-__version__ = '0.3'
+__version__ = '0.4'
 __versionfull__ = __version__
 
 
-from flask import current_app, Markup, render_template
+from flask import current_app, Markup, render_template, request
+
+def _make_cache_key(key_prefix):
+    """Make cache key from prefix
+    Borrowed from Flask-Cache extension
+    """
+    if callable(key_prefix):
+        cache_key = key_prefix()
+    elif '%s' in key_prefix:
+        cache_key = key_prefix % request.path
+    else:
+        cache_key = key_prefix
+
+    cache_key = cache_key.encode('utf-8')
+
+    return cache_key
 
 
 class Widgets():
     _positions = dict()
     _widgets = dict()
+    _cache = 'a'
 
-    def __init__(self, app=None):
+    def __init__(self, app=None, cache=None):
 
         self.app = app
         if app is not None:
-            self.init_app(app)
+            self.init_app(app, cache)
 
-    def init_app(self, app):
+    def init_app(self, app, cache):
         app.widgets = self
+        self._cache = cache
 
         app.jinja_env.globals['widgets'] = self.render_widget_position
         app.jinja_env.globals['widget'] = self.render_widget
 
-    @classmethod
-    def render_widget_position(self, position):
+    def render_widget_position(self, position, **options):
         if position not in self._positions:
             current_app.logger.warning('Position not found: %s' % position)
             return ''
+
+        cache_timeout = options.pop('timeout', None)
+        cache_key = _make_cache_key(options.pop('key_prefix', 'widgets-%s' % position))
+
+        if self._cache and cache_timeout:
+            output = self._cache.get(cache_key)
+            if output:
+                return output
 
         output = ''
         widgets = self._positions[position]
@@ -39,20 +63,36 @@ class Widgets():
                 output += Markup(render_template(template, **res))
             else:
                 output += Markup(res)
+
+        if self._cache and cache_timeout:
+            self._cache.set(cache_key, output, timeout=cache_timeout)
         return output
 
-    @classmethod
     def render_widget(self, name, **options):
         if name in self._widgets:
+            cache_timeout = options.pop('timeout', None)
+            cache_key = _make_cache_key(options.pop('key_prefix', 'widget_%s' % name))
+
+            if self._cache and cache_timeout:
+                output = self._cache.get(cache_key)
+                if output:
+                    return output
+
             f = self._widgets[name]
             res = f(**options)
             if res is None:
                 return ''
             if not isinstance(res, basestring):
                 template = 'widgets/%s.html' % f.__name__
-                return Markup(render_template(template, **res))
+                output = Markup(render_template(template, **res))
             else:
-                return Markup(res)
+                output = Markup(res)
+
+            if self._cache and cache_timeout:
+                self._cache.set(cache_key, output, timeout=cache_timeout)
+
+            return output
+
         return ''
 
     @property

@@ -1,12 +1,19 @@
 from flask import Flask, render_template
-from flask_widgets import Widgets
+from flask.ext.widgets import Widgets
+from flask.ext.cache import Cache
+from datetime import datetime
+
 app = Flask(__name__)
 
 app.config.update({
-    'DEBUG': True
+    'DEBUG': True,
+    'CACHE_TYPE': 'redis',
+    'CACHE_REDIS_URL': 'redis://localhost:6379/2'
 })
 
-widgets = Widgets(app)
+cache = Cache(app)
+widgets = Widgets(app, cache=cache)
+
 
 @widgets.widget('title')
 def title():
@@ -14,7 +21,7 @@ def title():
 
 @widgets.widget('say')
 def say(msg):
-    return 'says %s!' % msg
+    return 'says %s!<br>Last cached time for this widget was: %s' % (msg, datetime.now())
 
 
 @widgets.position('header', order=100)
@@ -28,7 +35,7 @@ def welcome():
 
 @widgets.position('footer')
 def welcome():
-    return 'Flask-Widgets by Bruce Doan'
+    return 'Flask-Widgets by Bruce Doan<br>Last cached time for this widget was: %s' % datetime.now()
 
 
 @app.route('/')
