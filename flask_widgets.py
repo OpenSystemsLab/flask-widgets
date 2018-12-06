@@ -58,7 +58,7 @@ class Widgets():
             res = f()
             if res is None:
                 return ''
-            if not isinstance(res, basestring):
+            if not isinstance(res, str):
                 template = 'widgets/%s.html' % f.__name__
                 output += Markup(render_template(template, **res))
             else:
@@ -82,7 +82,7 @@ class Widgets():
             res = f(**options)
             if res is None:
                 return ''
-            if not isinstance(res, basestring):
+            if not isinstance(res, str):
                 template = 'widgets/%s.html' % f.__name__
                 output = Markup(render_template(template, **res))
             else:
