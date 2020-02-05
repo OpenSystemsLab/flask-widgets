@@ -8,8 +8,8 @@ from setuptools import setup
 
 setup(
     name='Flask-Widgets',
-    version='0.4',
-    url='https://github.com/rgv151/flask-widgets',
+    version='0.5',
+    url='https://github.com/OpenSystemsLab/flask-widgets',
     license='MIT',
     author='Bruce Doan',
     author_email='me@huy.im',
